@@ -13,16 +13,19 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 import unicodedata
+from modelhandlers import ItemCompletionHandler, GetCompletedItemsHandler
 
 # import and define tornado-y things
 from tornado.options import define, options
-define("port", default=5000, help="run on the given port", type=int)
+define("port", default=5001, help="run on the given port", type=int)
 
 # application settings and handle mapping info
 class Application(tornado.web.Application):
 	def __init__(self):
 		handlers = [
-			(r"/([^/]+)?", MainHandler)
+#			(r"/([^/]+)?", MainHandler),
+			(r"/completeitem?", ItemCompletionHandler),
+			(r"/viewitems?", GetCompletedItemsHandler)
 		]
 		settings = dict(
 			template_path=os.path.join(os.path.dirname(__file__), "templates"),
@@ -51,7 +54,7 @@ class MainHandler(tornado.web.RequestHandler):
 def main():
 	tornado.options.parse_command_line()
 	http_server = tornado.httpserver.HTTPServer(Application())
-	http_server.listen(os.environ.get("PORT", 5000))
+	http_server.listen(os.environ.get("PORT", 5001))
 
 	# start it up
 	tornado.ioloop.IOLoop.instance().start()

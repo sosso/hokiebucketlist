@@ -1,1 +1,2 @@
-Tornado==2.1.1
+SQLAlchemy==0.7.9
+tornado==2.4
