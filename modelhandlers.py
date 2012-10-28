@@ -48,3 +48,23 @@ class GetCompletedItemsHandler(tornado.web.RequestHandler):
             session.rollback()
         dbutils.Session.remove()
         self.finish("")
+
+class DefineItemHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self):
+        item_id = self.get_argument('itemid')
+        description = self.get_argument('description', '')
+
+        session = dbutils.Session()
+        try:
+            item = dbutils.get_or_create(session, Item, item_id, description)
+            finish_string = "Item added"
+#            completed_items = session.Query(ItemCompletion).filter()
+        except Exception, e:
+            session.rollback()
+            finish_string = "Item not added"
+        finally:
+            dbutils.Session.remove()
+            self.finish(finish_string)
+            
+        

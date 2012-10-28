@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, session
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.pool import Pool
+from sqlalchemy.schema import MetaData
 from sqlalchemy.sql.expression import ClauseElement
 
 #logger = logging.getLogger('dbutils')
@@ -40,11 +41,13 @@ def ping_connection(dbapi_connection, connection_record, connection_proxy):
     cursor.close()
 
 
-engine = create_engine('mysql://bfc1ffabdb36c3:65da212b@us-cdbr-east-02.cleardb.com/heroku_1cec684f35035ce?charset=utf8', echo=False, pool_recycle=3600)#recycle connection every hour to prevent overnight disconnect
+engine = create_engine('mysql://bfc1ffabdb36c3:65da212b@us-cdbr-east-02.cleardb.com/heroku_1cec684f35035ce?charset=utf8', echo=True, pool_recycle=3600)#recycle connection every hour to prevent overnight disconnect
 #engine = create_engine('sqlite:///db3.sqlite', echo=True)
 Base = declarative_base(bind=engine)
 sm = sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_commit=False)
 Session = scoped_session(sm)
+metadata = MetaData()
+metadata.create_all(engine)
 #logging.getLogger('sqlalchemy.engine').setLevel(logging.WARN)
 #logging.getLogger('sqlalchemy.dialects').setLevel(logging.WARN)
 #logging.getLogger('sqlalchemy.pool').setLevel(logging.WARN)

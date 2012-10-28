@@ -12,8 +12,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-import unicodedata
-from modelhandlers import ItemCompletionHandler, GetCompletedItemsHandler
+from modelhandlers import ItemCompletionHandler, GetCompletedItemsHandler, DefineItemHandler
 
 # import and define tornado-y things
 from tornado.options import define, options
@@ -25,6 +24,7 @@ class Application(tornado.web.Application):
 		handlers = [
 #			(r"/([^/]+)?", MainHandler),
 			(r"/completeitem?", ItemCompletionHandler),
+			(r"/defineitem?", DefineItemHandler),
 			(r"/viewitems?", GetCompletedItemsHandler)
 		]
 		settings = dict(
