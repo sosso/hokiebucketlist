@@ -12,7 +12,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-from modelhandlers import ItemCompletionHandler, GetCompletedItemsHandler, DefineItemHandler
+from modelhandlers import ItemCompletionHandler, GetCompletedItemsHandler, DefineItemHandler, CreateUserHandler
 
 # import and define tornado-y things
 from tornado.options import define, options
@@ -25,7 +25,9 @@ class Application(tornado.web.Application):
 #			(r"/([^/]+)?", MainHandler),
 			(r"/completeitem?", ItemCompletionHandler),
 			(r"/defineitem?", DefineItemHandler),
-			(r"/viewitems?", GetCompletedItemsHandler)
+			(r"/viewitems?", GetCompletedItemsHandler),
+			(r"/createuser?", CreateUserHandler),
+			(r"/uploads/(.*)", tornado.web.StaticFileHandler, {"path": "./uploads/"},),
 		]
 		settings = dict(
 			template_path=os.path.join(os.path.dirname(__file__), "templates"),
