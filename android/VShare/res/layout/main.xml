@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VShare Server Address" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/server"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="http://10.0.2.2:5001/completeitem" >
+    </EditText>
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="bar" />
+
+    <EditText
+        android:id="@+id/item_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="4" />
+
+    <Button
+        android:id="@+id/shareIt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share It!" />
+
+</LinearLayout>

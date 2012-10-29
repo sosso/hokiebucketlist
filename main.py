@@ -23,7 +23,7 @@ class Application(tornado.web.Application):
 	def __init__(self):
 		handlers = [
 #			(r"/([^/]+)?", MainHandler),
-			(r"/completeitem?", ItemCompletionHandler),
+			(r"/completeitem", ItemCompletionHandler),
 			(r"/defineitem?", DefineItemHandler),
 			(r"/viewitems?", GetCompletedItemsHandler),
 			(r"/createuser?", CreateUserHandler),

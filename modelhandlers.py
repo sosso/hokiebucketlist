@@ -8,12 +8,17 @@ import simplejson
 
 #logger = logging.getLogger('modelhandlers')
 
+"""
+username
+item_id
+<file>
+"""
 class ItemCompletionHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def post(self):
         username = self.get_argument('username')
         item_id = self.get_argument('item_id')
-        try: file1 = self.request.files['file1'][0]
+        try: file1 = self.request.files['file'][0]
         except: file1 = None
 
         session = dbutils.Session()
@@ -27,7 +32,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
 
                 extension = os.path.splitext(original_fname)[1]
                 final_filename = item_id + extension
-                output_file = open("uploads/" + username + "/" + final_filename, 'w')
+                output_file = open("./uploads/" + username + "/" + final_filename, 'w')
                 output_file.write(file1['body'])
                 item_completion.file_path = "uploads/" + username + "/" + final_filename
 
@@ -42,7 +47,9 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
             self.finish(final_string)
 
 
-
+"""
+username
+"""
 class GetCompletedItemsHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
@@ -66,6 +73,9 @@ class GetCompletedItemsHandler(tornado.web.RequestHandler):
         dbutils.Session.remove()
         self.finish(simplejson.dumps(item_array))
 
+"""
+username
+"""
 class CreateUserHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
