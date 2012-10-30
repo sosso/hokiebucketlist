@@ -1,26 +1,21 @@
-package org.eece261.vshare;
+package com.sosso.ece4564.asgn2;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import com.example.sossostats.R;
+
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,70 +26,32 @@ import android.widget.EditText;
 public class VShare extends Activity {
 
 	private EditText server_;
-	private Button share_;
+	private Button share;
 	private EditText username, item_id;
 
-	/**
-	 * This method is the entry point to the VShare code. The "onCreate" method
-	 * is typically what you need to override to get your Activity started.
-	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Android uses a special XML file to specify the
-		// layout of the GUI. The iPhone uses a similar
-		// mechanism. These lines build the gui using the
-		// layout file res/layout/main.xml.
 		LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		// Once the gui is built, we need to grab the
-		// various UI widgets that we will use to specify
-		// the destination of the file.
 		View layout = (View) li.inflate(R.layout.main, null);
 		server_ = (EditText) layout.findViewById(R.id.server);
 		username = (EditText) layout.findViewById(R.id.username);
 		item_id = (EditText) layout.findViewById(R.id.item_id);
 		
-		
-		
-		
-		
-		/**
-		 * Step 1:
-		 * 
-		 * Modify the layout main.xml to add GUI
-		 * elements for capturing a user name and
-		 * comment to associate with each shared
-		 * picture.
-		 * 
-		 * Step 2:
-		 * 
-		 * You should add code here to get handles
-		 * to your GUI elements for the comments
-		 * and user name. You will also need to
-		 * add member variables to this class to 
-		 * hold those handles.
-		 * 
-		 * 
-		 */
-		
-		
-		
-		
-
 		// This is the button that the user will click
 		// to submit the file.
-		share_ = (Button) layout.findViewById(R.id.shareIt);
+		share = (Button) layout.findViewById(R.id.shareIt);
 
 		// We add a click listener to invoke the share
 		// machinery when the user is done.
-		share_.setOnClickListener(new OnClickListener() {
+		share.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// Temporarily disable the
 				// share button.
-				share_.setClickable(false);
+				share.setClickable(false);
 
 				// Grab the destination network information
 				// and invoke the sharing mechanism.
@@ -103,7 +60,7 @@ public class VShare extends Activity {
 				doShare(server, id);
 
 				// Enable the share button again.
-				share_.setClickable(true);
+				share.setClickable(true);
 
 				// Close the Activity
 				VShare.this.finish();
@@ -140,52 +97,6 @@ public class VShare extends Activity {
 						.getParcelableExtra(Intent.EXTRA_STREAM);
 				File f = new File(getRealPathFromURI(stream));
 				sendData(server, f, id);
-				/*if (stream != null && type != null) {
-					Log.i("VShare", "Got a stream for an image...");
-
-					// The content resolver allows us to grab the data
-					// that the URI refers to. We can also use it to
-					// read some metadata about the file.
-					ContentResolver contentResolver = getContentResolver();
-
-					// This call tries to guess what type of stream
-					// we have been passed.
-					String contentType = contentResolver.getType(stream);
-
-					String name = null;
-					int size = -1;
-					// Now, we index into the metadata for the stream and
-					// figure out what we are dealing with...size/name.
-					Cursor metadataCursor = contentResolver.query(stream,
-							new String[] { OpenableColumns.DISPLAY_NAME,
-									OpenableColumns.SIZE }, null, null, null);
-					if (metadataCursor != null) {
-						try {
-							if (metadataCursor.moveToFirst()) {
-								name = metadataCursor.getString(0);
-								size = metadataCursor.getInt(1);
-
-							}
-						} finally {
-							metadataCursor.close();
-						}
-					}
-
-					// If for some reason we couldn't get a name,
-					// we just use the last path segment as the name.
-					if (name == null)
-						name = stream.getLastPathSegment();
-
-					// Now, we try to resolve the URI to an actual InputStream
-					// that we can read.
-					InputStream in = contentResolver.openInputStream(stream);
-
-					// Finally, we pipe the stream to the network.
-					sendData(server, in, name);
-
-				} else {
-					Log.i("VShare", "Stream was null");
-				}*/
 			} else {
 				Log.i("VShare", "Invoked outside of send....");
 			}
@@ -227,58 +138,17 @@ public class VShare extends Activity {
 		// the server, we have to create a complete copy of the
 		// input stream. Otherwise, the stream may be gone when
 		// we try to use it.
-//		byte[] data = IOUtils.toByteArray(in);
-//		ByteArrayInputStream bin = new ByteArrayInputStream(data);
-		
 		HttpPost request = new HttpPost(url);
 		
 		// File uploads must use a multipart request. This
 		// code creates the basic multipart request and 
 		// and adds the file to it.
 		MultipartEntity entity = new MultipartEntity();
-//		entity.addPart("thefile", new InputStreamBody(bin,name));
-		
-		/**
-		 * 
-		 * Step 3:
-		 * 
-		 * Your code to add the comment and name parameters to
-		 * the entity should go here. You can use the method
-		 * addPart("your_param", new StringBody("your_value"))
-		 * to add them.
-		 */
 		entity.addPart("username", new StringBody(username.getText().toString()));
 		entity.addPart("item_id", new StringBody(item_id.getText().toString()));
-		entity.addPart("file", new FileBody(f));
+		entity.addPart("file", new FileBody(f, "image/jpeg"));
 		
-		
-		
-		/**
-		 * 
-		 * Step 5:
-		 * 
-		 * After you create your AsyncTask per the instructions
-		 * below, you should be able to instantiate an instance
-		 * of it here and execute it. The creation/execution
-		 * code should look similar to what is commented out
-		 * below.
-		 */
 		UploadTask t = new UploadTask(url, entity);
 		t.execute();
 	}
-	
-	/**
-	 * 
-	 * Step 4:
-	 * 
-	 * You should create an AsyncTask implementation called UploadTask. The
-	 * task should take the MultipartEntity you create in sendData()
-	 * and the url of the server as either constructor or method params.
-	 * The task should then use these params to create an HttpClient and
-	 * send the request to the server.
-	 */
-
-
-	
-	
 }

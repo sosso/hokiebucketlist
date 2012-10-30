@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">SossoStats</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">SossoStats</string>
+    <string name="title_activity_display_club_stats">DisplayClubStatsActivity</string>
+
+</resources>
