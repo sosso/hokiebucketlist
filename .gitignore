@@ -39,6 +39,7 @@ local.properties
 .settings/
 .loadpath
 venv/**
+uploads/**
 
 # External tool builders
 .externalToolBuilders/
