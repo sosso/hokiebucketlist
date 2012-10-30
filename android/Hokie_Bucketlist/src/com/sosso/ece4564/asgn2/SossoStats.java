@@ -20,45 +20,26 @@ public class SossoStats extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
+		final String username = getIntent().getStringExtra("username");
 		Button fetchButton = (Button) findViewById(R.id.fetchbutton);
 		fetchButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				int checkedRadioButton = radioGroup.getCheckedRadioButtonId();
-				String radioButtonSelected = "";
-				switch (checkedRadioButton) {
-				case R.id.hrp:
-					radioButtonSelected = "hrp";
-					break;
-				case R.id.rdt:
-					radioButtonSelected = "rdt";
-					break;
-				case R.id.pgf:
-					radioButtonSelected = "pgf";
-					break;
-				}
-				launchIntent(radioButtonSelected);
+				getItems(username);
 			}
 		});
 
 	}
 
-	public void launchIntent(String radioButtonSelected) {
-		FetchStatsTask task = new FetchStatsTask(this, radioButtonSelected);
+	public void getItems(String username) {
+		FetchItemsTask task = new FetchItemsTask(this, username);
 		task.execute();
 	}
 
-	public void renderClubRoster(ArrayList<String> clubData) {
+	public void renderCompletedItems(ArrayList<String> completedItems) {
 		Intent i = new Intent(this, ListActivity2.class);
-		i.putStringArrayListExtra("clubData", clubData);
+		i.putStringArrayListExtra("completedItems", completedItems);
 		startActivity(i);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
 }

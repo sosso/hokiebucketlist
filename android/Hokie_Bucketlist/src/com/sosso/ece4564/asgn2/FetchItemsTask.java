@@ -21,54 +21,49 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-public class FetchStatsTask extends AsyncTask<Void, Void, ArrayList<String>> {
+public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 	private ProgressDialog dialog;
 	private SossoStats context;
-	private String radioButtonSelected;
+	private String username;
 
-	public FetchStatsTask(SossoStats context, String radioButtonSelected) {
+	public FetchItemsTask(SossoStats context, String username) {
 		this.context = context;
-		this.radioButtonSelected = radioButtonSelected;
+		this.username = username;
 	}
 
 	@Override
 	protected void onPreExecute() {
 		try {
 			this.dialog = ProgressDialog.show(context, "",
-					"now downloading stats", true);
+					"now downloading items", true);
 		} catch (final Throwable th) {
 			// TODO
 		}
 	}
 
 	protected ArrayList<String> doInBackground(Void... passing) {
-		ArrayList<String> listItems = new ArrayList<String>();
 		BufferedReader in;
-		ArrayList<String> playerStrings = new ArrayList<String>();
+		ArrayList<String> itemStrings = new ArrayList<String>();
 		try {
 			HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-//            request.setURI(new URI("https://dl.dropbox.com/u/6996716/mock.json"));
-            request.setURI(new URI("http://mysterious-mesa-9599.herokuapp.com/showstats?club=" + radioButtonSelected));
+            request.setURI(new URI("http://localhost:5001/viewitems?username=" + username));
             HttpResponse response = client.execute(request);
             in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line;
 			
 			while ((line = in.readLine()) != null) {
-				JSONArray players = new JSONArray(line);
-				for(int i = 0; i < players.length(); i++){
-					JSONObject player = (JSONObject) players.get(i);
-					Iterator<?> playerStats = player.keys();
-					String playerString = "";
-			        while( playerStats.hasNext() ){
-			        	String key = (String)playerStats.next();
-			            if(key.equals("py/object")){
-			            	continue;
-			            }
-			        	String value = (String) player.getString(key);
-			            playerString += key + ":\t" + value + ";";
+				JSONArray items = new JSONArray(line);
+				for(int i = 0; i < items.length(); i++){
+					JSONObject item = (JSONObject) items.get(i);
+					Iterator<?> itemKeys = item.keys();
+					String itemString = "";
+			        while( itemKeys.hasNext() ){
+			        	String key = (String)itemKeys.next();
+			        	String value = (String) item.getString(key);
+			            itemString += key + ":\t" + value + ";";
 			        }
-			        playerStrings.add(playerString);
+			        itemStrings.add(itemString);
 				}
 			}
 		} catch (MalformedURLException e) {
@@ -80,7 +75,7 @@ public class FetchStatsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		return playerStrings;
+		return itemStrings;
 	}
 
 	protected void onPostExecute(ArrayList<String> result) {

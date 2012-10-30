@@ -24,14 +24,14 @@ public class ListActivity2 extends Activity {
 
 		ListView listView1 = (ListView) findViewById(R.id.listView1);
 
-		final List<String> dummyData = getIntent().getStringArrayListExtra("clubData");
-		Vector<String> usernames = new Vector<String>();
+		final List<String> dummyData = getIntent().getStringArrayListExtra("completedItems");
+		Vector<String> itemNumbers = new Vector<String>();
 		for(String playerString : dummyData){
 			int memberIndex = playerString.indexOf("member_name");
 			String member_name = playerString.substring(memberIndex, playerString.indexOf(";", memberIndex));
-			usernames.add(member_name);
+			itemNumbers.add(member_name);
 		}
-		String[] stringArray = Arrays.copyOf(usernames.toArray(), usernames.size(), String[].class);
+		String[] stringArray = Arrays.copyOf(itemNumbers.toArray(), itemNumbers.size(), String[].class);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, stringArray);
@@ -40,7 +40,6 @@ public class ListActivity2 extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
 				launchIntent(dummyData.get(arg2));
 			}
 
@@ -50,7 +49,7 @@ public class ListActivity2 extends Activity {
 
 	private void launchIntent(String statString) {
 		Intent i = new Intent(this, DisplayPlayerStatsActivity.class);
-		i.putExtra("statString", statString);
+		i.putExtra("itemString", statString);
 		startActivity(i);
 	}
 
