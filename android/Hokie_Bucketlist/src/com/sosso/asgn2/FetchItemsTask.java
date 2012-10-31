@@ -1,4 +1,4 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,11 +23,11 @@ import android.os.AsyncTask;
 
 public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 	private ProgressDialog dialog;
-	private SossoStats context;
+	private ActionScreenActivity context;
 	private String username;
 
-	public FetchItemsTask(SossoStats context, String username) {
-		this.context = context;
+	public FetchItemsTask(ActionScreenActivity actionScreenActivity, String username) {
+		this.context = actionScreenActivity;
 		this.username = username;
 	}
 
@@ -47,7 +47,7 @@ public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 		try {
 			HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("http://localhost:5001/viewitems?username=" + username));
+            request.setURI(new URI("http://10.0.2.2:5001/viewitems?username=" + username));
             HttpResponse response = client.execute(request);
             in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line;

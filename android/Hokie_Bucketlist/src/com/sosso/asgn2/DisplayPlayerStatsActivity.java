@@ -1,21 +1,11 @@
-package com.sosso.ece4564.asgn2;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.sossostats.R;
+package com.sosso.asgn2;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class DisplaySingleItem extends Activity {
+public class DisplayPlayerStatsActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

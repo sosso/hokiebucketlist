@@ -1,10 +1,8 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-
-import com.example.sossostats.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ListActivity2 extends Activity {
+public class CompletedItemsScreenActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,14 +22,14 @@ public class ListActivity2 extends Activity {
 
 		ListView listView1 = (ListView) findViewById(R.id.listView1);
 
-		final List<String> dummyData = getIntent().getStringArrayListExtra("completedItems");
-		Vector<String> itemNumbers = new Vector<String>();
-		for(String playerString : dummyData){
-			int memberIndex = playerString.indexOf("member_name");
-			String member_name = playerString.substring(memberIndex, playerString.indexOf(";", memberIndex));
-			itemNumbers.add(member_name);
+		final List<String> itemStrings = getIntent().getStringArrayListExtra("completedItems");
+		Vector<String> itemDescriptions = new Vector<String>();
+		for(String itemString : itemStrings){
+			int descriptionIndex = itemString.indexOf("Description");
+			String description = itemString.substring(descriptionIndex + 12, itemString.indexOf(";", descriptionIndex));
+			itemDescriptions.add(description);
 		}
-		String[] stringArray = Arrays.copyOf(itemNumbers.toArray(), itemNumbers.size(), String[].class);
+		String[] stringArray = Arrays.copyOf(itemDescriptions.toArray(), itemDescriptions.size(), String[].class);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, stringArray);
@@ -40,7 +38,7 @@ public class ListActivity2 extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				launchIntent(dummyData.get(arg2));
+				launchIntent(itemStrings.get(arg2));
 			}
 
 		});
@@ -48,9 +46,13 @@ public class ListActivity2 extends Activity {
 	}
 
 	private void launchIntent(String statString) {
-		Intent i = new Intent(this, DisplayPlayerStatsActivity.class);
-		i.putExtra("itemString", statString);
-		startActivity(i);
+		String[] imageData = statString.split(";")[0].split(":\t");
+		if(imageData.length > 1){
+			Intent i = new Intent(this, DisplaySingleItemActivity.class);
+			i.putExtra("imageurl", imageData[1]);
+			startActivity(i);
+		}
+		
 	}
 
 }

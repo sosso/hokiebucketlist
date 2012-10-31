@@ -1,4 +1,4 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,8 +7,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-
-import com.example.sossostats.R;
 
 import android.app.Activity;
 import android.content.Intent;

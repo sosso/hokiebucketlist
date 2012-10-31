@@ -1,4 +1,4 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.io.IOException;
 

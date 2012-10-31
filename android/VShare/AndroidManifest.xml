@@ -10,9 +10,6 @@
                  <action android:name="android.intent.action.SEND" />
     			 <category android:name="android.intent.category.DEFAULT" />
   			     <data android:mimeType="image/*" />
-                 <!--  intent.setAction(Intent.ACTION_SEND);
-        intent.setType("video/3gpp");
-        intent.putExtra(Intent.EXTRA_STREAM, mCurrentVideoUri);-->
             </intent-filter>
         </activity>
     </application>

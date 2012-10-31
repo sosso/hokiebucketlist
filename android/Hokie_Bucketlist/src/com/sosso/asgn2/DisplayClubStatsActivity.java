@@ -1,18 +1,12 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.sossostats.R;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;

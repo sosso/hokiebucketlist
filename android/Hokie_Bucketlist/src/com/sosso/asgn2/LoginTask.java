@@ -1,4 +1,4 @@
-package com.sosso.ece4564.asgn2;
+package com.sosso.asgn2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,10 +17,10 @@ import android.os.AsyncTask;
 
 public class LoginTask extends AsyncTask<Void, Void, String> {
 	private ProgressDialog dialog;
-	private LoginScreen context;
+	private LoginScreenActivity context;
 	private String username;
 
-	public LoginTask(LoginScreen loginScreen, String username) {
+	public LoginTask(LoginScreenActivity loginScreen, String username) {
 		this.context = loginScreen;
 		this.username = username;
 	}
@@ -41,7 +41,7 @@ public class LoginTask extends AsyncTask<Void, Void, String> {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 			request.setURI(new URI(
-					"http://hokie-bucketlist.herokuapp.com/createuser?username="
+					"http://10.0.2.2:5001/createuser?username="
 							+ username));
 			HttpResponse response = client.execute(request);
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
@@ -64,6 +64,10 @@ public class LoginTask extends AsyncTask<Void, Void, String> {
 
 	protected void onPostExecute(String result) {
 		dialog.dismiss();
-		this.context.renderClubRoster(result);
+		if(result.equals("User creation successful!")){
+			this.context.processLoginResult(true);
+		}else{
+			this.context.processLoginResult(false);
+		}
 	}
 }

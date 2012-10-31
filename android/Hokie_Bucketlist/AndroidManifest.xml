@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sossostats"
+    package="com.sosso.asgn2"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,42 +14,43 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SossoStats"
-            android:label="@string/title_activity_main" >
+            android:name=".LoginScreenActivity"
+            android:label="HokieBucketlist" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginScreenActivity"
-            android:label="@string/title_activity_display_club_stats" >
+            android:name=".ActionScreenActivity"
+            android:label="" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.sossostats.MainActivity" />
+                android:value="com.sosso.asgn2.LoginScreenActivity" />
         </activity>
         <activity
-            android:name=".DisplayClubStatsActivity"
-            android:label="@string/title_activity_display_club_stats" >
+            android:name=".CompletedItemsScreenActivity"
+            android:label="Completed items" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.sossostats.MainActivity" />
+                android:value="com.sosso.asgn2.ActionScreenActivity" />
         </activity>
         <activity
-            android:name=".ListActivity2"
-            android:label="@string/title_activity_display_club_stats" >
+            android:name=".DisplaySingleItemActivity"
+            android:label="" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.sossostats.MainActivity" />
+                android:value="com.sosso.asgn2.CompletedItemsScreenActivity" />
         </activity>
-        <activity
-            android:name=".DisplayPlayerStatsActivity"
-            android:label="@string/title_activity_display_club_stats" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.sossostats.MainActivity" />
+              <activity android:name=".VShare"
+                  android:label="Complete item">
+            <intent-filter>
+                 <action android:name="android.intent.action.SEND" />
+    			 <category android:name="android.intent.category.DEFAULT" />
+  			     <data android:mimeType="image/*" />
+            </intent-filter>
         </activity>
+        
     </application>
 
 </manifest>
