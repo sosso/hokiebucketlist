@@ -39,6 +39,10 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
 
                 extension = os.path.splitext(original_fname)[1]
                 final_filename = item_id + extension
+                if not os.path.exists("./uploads"):
+                    os.makedirs("./uploads")
+                if not os.path.exists("./uploads/%s" % username):
+                    os.makedirs("./uploads/%s" % username)
                 output_file = open("./uploads/" + username + "/" + final_filename, 'wb')
                 output_file.write(file1['body'])
                 item_completion.file_path = "uploads/" + username + "/" + final_filename
