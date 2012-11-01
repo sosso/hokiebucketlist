@@ -30,7 +30,7 @@ public class ActionScreenActivity extends Activity {
 	}
 	
 	public void getItems(String username) {
-		FetchItemsTask task = new FetchItemsTask(this, username);
+		FetchItemsTask task = new FetchItemsTask(this, username, getString(R.string.BASE_URL));
 		task.execute();
 	}
 

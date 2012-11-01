@@ -3,5 +3,6 @@
     <string name="app_name">HokieBucketlist</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">LoginScreenActivity</string>
+    <string name="BASE_URL">http://hokie-bucketlist.herokuapp.com</string>
 
 </resources>

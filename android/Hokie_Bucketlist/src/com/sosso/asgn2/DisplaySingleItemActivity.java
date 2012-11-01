@@ -15,7 +15,7 @@ public class DisplaySingleItemActivity extends Activity {
 		setContentView(R.layout.singleitem);
 
 		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
-		String url = "http://10.0.2.2:5001/"
+		String url = getString(R.string.BASE_URL)
 				+ getIntent().getStringExtra("imageurl");
 		try {
 			URL thumb_u = new URL(url);

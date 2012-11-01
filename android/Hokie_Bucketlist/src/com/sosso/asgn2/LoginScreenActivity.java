@@ -34,7 +34,7 @@ public class LoginScreenActivity extends Activity {
 	}
 
 	public void loginAttempt(String username) {
-		LoginTask task = new LoginTask(this, username);
+		LoginTask task = new LoginTask(this, username, getString(R.string.BASE_URL));
 		task.execute();
 	}
 

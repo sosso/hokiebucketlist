@@ -9,8 +9,9 @@ import dbutils
 import os
 import simplejson
 import tornado
+import logging
 
-#logger = logging.getLogger('modelhandlers')
+logger = logging.getLogger('modelhandlers')
 
 
 
@@ -47,6 +48,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
             final_string = "You have crossed item " + item_id + " off your bucket list!"
         except Exception, e:
             session.rollback()
+            logger.exception()
             final_string = "Oops!  Something went wrong.  Please try again"
         finally:
             Session.remove()

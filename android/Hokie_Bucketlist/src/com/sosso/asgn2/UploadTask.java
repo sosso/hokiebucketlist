@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
 
@@ -28,6 +29,8 @@ public class UploadTask extends AsyncTask<Void, Void, Void> {
 		request.setEntity(this.entity);
 		try {
 			HttpResponse response = client.execute(request);
+			String result = EntityUtils.toString(response.getEntity());
+			String x = this.url;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

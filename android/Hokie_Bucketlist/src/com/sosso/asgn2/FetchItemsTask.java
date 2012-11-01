@@ -24,11 +24,12 @@ import android.os.AsyncTask;
 public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 	private ProgressDialog dialog;
 	private ActionScreenActivity context;
-	private String username;
+	private String username, baseurl;
 
-	public FetchItemsTask(ActionScreenActivity actionScreenActivity, String username) {
+	public FetchItemsTask(ActionScreenActivity actionScreenActivity, String username, String baseurl) {
 		this.context = actionScreenActivity;
 		this.username = username;
+		this.baseurl = baseurl;
 	}
 
 	@Override
@@ -36,9 +37,7 @@ public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 		try {
 			this.dialog = ProgressDialog.show(context, "",
 					"now downloading items", true);
-		} catch (final Throwable th) {
-			// TODO
-		}
+		} catch (final Throwable th) {}
 	}
 
 	protected ArrayList<String> doInBackground(Void... passing) {
@@ -47,7 +46,7 @@ public class FetchItemsTask extends AsyncTask<Void, Void, ArrayList<String>> {
 		try {
 			HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("http://10.0.2.2:5001/viewitems?username=" + username));
+            request.setURI(new URI(this.baseurl + "/viewitems?username=" + username));
             HttpResponse response = client.execute(request);
             in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line;

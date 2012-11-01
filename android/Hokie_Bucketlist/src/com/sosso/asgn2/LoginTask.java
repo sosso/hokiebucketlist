@@ -18,11 +18,12 @@ import android.os.AsyncTask;
 public class LoginTask extends AsyncTask<Void, Void, String> {
 	private ProgressDialog dialog;
 	private LoginScreenActivity context;
-	private String username;
+	private String username, baseurl;
 
-	public LoginTask(LoginScreenActivity loginScreen, String username) {
+	public LoginTask(LoginScreenActivity loginScreen, String username, String baseurl) {
 		this.context = loginScreen;
 		this.username = username;
+		this.baseurl = baseurl;
 	}
 
 	@Override
@@ -40,9 +41,9 @@ public class LoginTask extends AsyncTask<Void, Void, String> {
 		try {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
-			request.setURI(new URI(
-					"http://10.0.2.2:5001/createuser?username="
-							+ username));
+			String url = this.baseurl + "/createuser?username="
+					+ username;
+			request.setURI(new URI(url));
 			HttpResponse response = client.execute(request);
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));

@@ -23,7 +23,6 @@ import android.widget.EditText;
 
 public class VShare extends Activity {
 
-	private EditText server_;
 	private Button share;
 	private EditText username, item_id;
 
@@ -33,7 +32,6 @@ public class VShare extends Activity {
 		LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		View layout = (View) li.inflate(R.layout.main, null);
-		server_ = (EditText) layout.findViewById(R.id.server);
 		username = (EditText) layout.findViewById(R.id.username);
 		item_id = (EditText) layout.findViewById(R.id.item_id);
 		
@@ -53,9 +51,9 @@ public class VShare extends Activity {
 
 				// Grab the destination network information
 				// and invoke the sharing mechanism.
-				String server = server_.getText().toString();
+				String url = getString(R.string.BASE_URL) + "/completeitem";
 				String id = item_id.getText().toString();
-				doShare(server, id);
+				doShare(url, id);
 
 				// Enable the share button again.
 				share.setClickable(true);
