@@ -1,12 +1,21 @@
 from models import User, Item, ItemCompletion
 from pkg_resources import StringIO
+from sqlalchemy.engine import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.sql.functions import random
 import dbutils
 import os
-import tornado
 import simplejson
+import tornado
 
 #logger = logging.getLogger('modelhandlers')
+engine = create_engine('mysql://bfc1ffabdb36c3:65da212b@us-cdbr-east-02.cleardb.com/heroku_1cec684f35035ce?charset=utf8', echo=True, pool_recycle=3600)#recycle connection every hour to prevent overnight disconnect)
+Base = declarative_base(bind=engine)
+sm = sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_commit=False)
+Session = scoped_session(sm)
+
 
 """
 username
@@ -21,7 +30,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
         try: file1 = self.request.files['file'][0]
         except: file1 = None
 
-        session = dbutils.Session()
+        session = Session()
         try:
             user = dbutils.get_or_create(session, User, username=username)
             item = dbutils.get_or_create(session, Item, item_id=item_id)
@@ -43,7 +52,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
             session.rollback()
             final_string = "Oops!  Something went wrong.  Please try again"
         finally:
-            dbutils.Session.remove()
+            Session.remove()
             self.finish(final_string)
 
 
@@ -55,7 +64,7 @@ class GetCompletedItemsHandler(tornado.web.RequestHandler):
     def get(self):
         username = self.get_argument('username')
 
-        session = dbutils.Session()
+        session = Session()
         try:
             user = dbutils.get_or_create(session, User, username=username)
             item_array = []
@@ -70,7 +79,7 @@ class GetCompletedItemsHandler(tornado.web.RequestHandler):
 #            completed_items = session.Query(ItemCompletion).filter()
         except Exception, e:
             session.rollback()
-        dbutils.Session.remove()
+        Session.remove()
         self.finish(simplejson.dumps(item_array))
 
 """
@@ -81,7 +90,7 @@ class CreateUserHandler(tornado.web.RequestHandler):
     def get(self):
         username = self.get_argument('username')
 
-        session = dbutils.Session()
+        session = Session()
         try:
             user = dbutils.get_or_create(session, User, username=username)
             final_string = "User creation successful!"
@@ -89,7 +98,7 @@ class CreateUserHandler(tornado.web.RequestHandler):
             session.rollback()
             final_string = "User creation failed."
         finally:
-            dbutils.Session.remove()
+            Session.remove()
             self.finish(final_string)
 
 class DefineItemHandler(tornado.web.RequestHandler):
@@ -98,7 +107,7 @@ class DefineItemHandler(tornado.web.RequestHandler):
         item_id = self.get_argument('itemid')
         description = self.get_argument('description', '')
 
-        session = dbutils.Session()
+        session = Session()
         try:
             item = dbutils.get_or_create(session, Item, item_id=item_id)
             item.description = description
@@ -111,7 +120,7 @@ class DefineItemHandler(tornado.web.RequestHandler):
             session.rollback()
             finish_string = "Item not added"
         finally:
-            dbutils.Session.remove()
+            Session.remove()
             self.finish(finish_string)
 
-
+Base.metadata.create_all(engine)
