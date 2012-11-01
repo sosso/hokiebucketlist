@@ -1,12 +1,18 @@
 from sqlalchemy import Column, Integer, VARCHAR, INTEGER
+from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref, scoped_session
+from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.schema import ForeignKey
 import dbutils
 
+engine = create_engine('mysql://bfc1ffabdb36c3:65da212b@us-cdbr-east-02.cleardb.com/heroku_1cec684f35035ce?charset=utf8', echo=True, pool_recycle=3600)#recycle connection every hour to prevent overnight disconnect)
+Base = declarative_base(bind=engine)
+sm = sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_commit=False)
+Session = scoped_session(sm)
 
-
-class User(dbutils.Base):
+class User(Base):
     __tablename__ = 'user'
     #column definitions
     id = Column(u'id', INTEGER(), primary_key=True, nullable=False)
@@ -15,7 +21,7 @@ class User(dbutils.Base):
 #    item_completions = relationship('ItemCompletion', backref='user') #one to many
     completed_items = association_proxy('completed_items', 'item')
 
-class ItemCompletion(dbutils.Base):
+class ItemCompletion(Base):
     __tablename__ = 'itemcompletion'
 
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
@@ -35,7 +41,7 @@ class ItemCompletion(dbutils.Base):
         return '<ItemCompletion %d @ %d>' % (self.user_id, self.item_id)
 
 
-class Item(dbutils.Base):
+class Item(Base):
     __tablename__ = 'item'
     id = Column(Integer, primary_key=True)
     item_id = Column(Integer)
@@ -53,6 +59,6 @@ class Item(dbutils.Base):
                 'Description': self.description
                 }
 
-
+Base.metadata.create_all(engine)
 
 

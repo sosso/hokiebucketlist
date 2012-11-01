@@ -1,4 +1,4 @@
-from models import User, Item, ItemCompletion
+from models import User, Item, ItemCompletion, Session
 from pkg_resources import StringIO
 from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,10 +11,7 @@ import simplejson
 import tornado
 
 #logger = logging.getLogger('modelhandlers')
-engine = create_engine('mysql://bfc1ffabdb36c3:65da212b@us-cdbr-east-02.cleardb.com/heroku_1cec684f35035ce?charset=utf8', echo=True, pool_recycle=3600)#recycle connection every hour to prevent overnight disconnect)
-Base = declarative_base(bind=engine)
-sm = sessionmaker(bind=engine, autoflush=True, autocommit=False, expire_on_commit=False)
-Session = scoped_session(sm)
+
 
 
 """
@@ -123,4 +120,4 @@ class DefineItemHandler(tornado.web.RequestHandler):
             Session.remove()
             self.finish(finish_string)
 
-Base.metadata.create_all(engine)
+
