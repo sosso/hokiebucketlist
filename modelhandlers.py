@@ -27,7 +27,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
         item_id = self.get_argument('item_id')
         try: file1 = self.request.files['file'][0]
         except: file1 = None
-
+        final_string = ''
         session = Session()
         try:
             user = dbutils.get_or_create(session, User, username=username)
