@@ -48,7 +48,7 @@ class ItemCompletionHandler(tornado.web.RequestHandler):
             final_string = "You have crossed item " + item_id + " off your bucket list!"
         except Exception, e:
             session.rollback()
-            logger.exception()
+            logger.exception(e)
             final_string = "Oops!  Something went wrong.  Please try again"
         finally:
             Session.remove()
